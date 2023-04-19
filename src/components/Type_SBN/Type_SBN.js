@@ -22,7 +22,13 @@ const TypeSBN = (props) => {
     setType(e.target.value);
   };
   useEffect(() => {
-    props.updateFields(props.id, value, type, required);
+    if (
+      props.name !== value ||
+      props.required !== required ||
+      props.type !== type
+    ) {
+      props.updateFields(props.id, props.uid, value, type, required);
+    }
   }, [value, required, type]);
   return (
     <div className={styles.main}>

@@ -1,21 +1,32 @@
 import styles from "./Main.module.css";
 import TypeSBN from "../Type_SBN/Type_SBN";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import uuid from "react-uuid";
 const Main = () => {
   const [fields, setFields] = useState([
-    { name: "order", type: "STRING", required: true },
+    {
+      uid: uuid(),
+      name: "order1",
+      type: "STRING",
+      required: true,
+    },
   ]);
   const addNewField = () => {
     setFields((fields) => {
       const newFields = [...fields];
-      newFields.push({ name: "order", type: "STRING", required: true });
+      newFields.push({
+        uid: uuid(),
+        name: "order",
+        type: "STRING",
+        required: true,
+      });
       return newFields;
     });
   };
-  const updateFields = (id, name, type, required) => {
+  const updateFields = (id, uid, name, type, required) => {
     setFields((fields) => {
       const newFields = [...fields];
-      newFields[id] = { name, type, required };
+      newFields[id] = { uid, name, type, required };
       return newFields;
     });
   };
@@ -29,6 +40,9 @@ const Main = () => {
   const printToConsole = () => {
     console.log(fields);
   };
+  useEffect(() => {
+    console.log(fields);
+  }, [fields]);
   return (
     <div className={styles["main-container"]}>
       <div className={styles["container"]}>
@@ -45,11 +59,12 @@ const Main = () => {
           <div className={styles["main__body"]}>
             <ol>
               {fields.map((field, index) => (
-                <li key={index}>
+                <li key={field.uid}>
                   <TypeSBN
                     updateFields={updateFields}
                     deleteField={deleteField}
-                    key={index}
+                    // key={index}
+                    uid={field.uid}
                     id={index}
                     name={field.name}
                     type={field.type}
